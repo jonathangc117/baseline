@@ -1,0 +1,152 @@
+<div class="flex align-items-center justify-content-center">
+  <div class="w-full max-w-25rem">
+    <p-card styleClass="shadow-8 border-round-3xl mt-6">
+      <ng-template pTemplate="header">
+        <div class="text-center p-4 pb-2">
+          <h1 class="text-2xl font-bold m-0 mb-2 text-white">Tennis Tourneys</h1>
+          <p class="m-0 opacity-90">{{ isLoginMode ? 'Welcome back!' : 'Join the tournament!' }}</p>
+        </div>
+      </ng-template>
+
+      <!-- Error Message -->
+      <div *ngIf="error" class="p-4 pt-2">
+        <p-message severity="error" [text]="error"></p-message>
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="success" class="p-4 pt-2">
+        <p-message severity="success" [text]="success"></p-message>
+      </div>
+
+      <!-- Login Form -->
+      <form *ngIf="isLoginMode" [formGroup]="loginForm" (ngSubmit)="onLogin()" class="p-4">
+        <div class="mb-4">
+          <label for="email" class="block mb-2 font-medium" style="color: var(--tennis-green);">Email</label>
+          <input 
+            pInputText 
+            id="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            class="w-full"
+            [class.p-invalid]="getFieldError(loginForm, 'email')">
+          <small *ngIf="getFieldError(loginForm, 'email')" class="p-error block mt-1">
+            {{ getFieldError(loginForm, 'email') }}
+          </small>
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="block mb-2 font-medium" style="color: var(--tennis-green);">Password</label>
+          <p-password 
+            id="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            [feedback]="false"
+            [toggleMask]="true"
+            class="w-full"
+            [class.p-invalid]="getFieldError(loginForm, 'password')">
+          </p-password>
+          <small *ngIf="getFieldError(loginForm, 'password')" class="p-error block mt-1">
+            {{ getFieldError(loginForm, 'password') }}
+          </small>
+        </div>
+
+        <p-button 
+          type="submit"
+          label="Sign In"
+          icon="pi pi-sign-in"
+          [loading]="loading"
+          [disabled]="loginForm.invalid"
+          styleClass="p-button-success w-full mt-3">
+        </p-button>
+      </form>
+
+      <!-- Signup Form -->
+      <form *ngIf="!isLoginMode" [formGroup]="signupForm" (ngSubmit)="onSignup()" class="p-4">
+        <div class="mb-4">
+          <label for="signup-name" class="block mb-2 font-medium" style="color: var(--tennis-green);">Name</label>
+          <input 
+            pInputText 
+            id="signup-name"
+            formControlName="name"
+            placeholder="Enter your name"
+            class="w-full"
+            [class.p-invalid]="getFieldError(signupForm, 'name')">
+          <small *ngIf="getFieldError(signupForm, 'name')" class="p-error block mt-1">
+            {{ getFieldError(signupForm, 'name') }}
+          </small>
+        </div>
+
+        <div class="mb-4">
+          <label for="signup-email" class="block mb-2 font-medium" style="color: var(--tennis-green);">Email</label>
+          <input 
+            pInputText 
+            id="signup-email"
+            formControlName="email"
+            placeholder="Enter your email"
+            class="w-full"
+            [class.p-invalid]="getFieldError(signupForm, 'email')">
+          <small *ngIf="getFieldError(signupForm, 'email')" class="p-error block mt-1">
+            {{ getFieldError(signupForm, 'email') }}
+          </small>
+        </div>
+
+        <div class="mb-4">
+          <label for="signup-password" class="block mb-2 font-medium" style="color: var(--tennis-green);">Password</label>
+          <p-password 
+            id="signup-password"
+            formControlName="password"
+            placeholder="Create a password"
+            [feedback]="true"
+            [toggleMask]="true"
+            class="w-full"
+            [class.p-invalid]="getFieldError(signupForm, 'password')">
+          </p-password>
+          <small *ngIf="getFieldError(signupForm, 'password')" class="p-error block mt-1">
+            {{ getFieldError(signupForm, 'password') }}
+          </small>
+        </div>
+
+        <div class="mb-4">
+          <label for="confirm-password" class="block mb-2 font-medium" style="color: var(--tennis-green);">Confirm Password</label>
+          <p-password 
+            id="confirm-password"
+            formControlName="confirmPassword"
+            placeholder="Confirm your password"
+            [feedback]="false"
+            [toggleMask]="true"
+            class="w-full"
+            [class.p-invalid]="getFieldError(signupForm, 'confirmPassword')">
+          </p-password>
+          <small *ngIf="getFieldError(signupForm, 'confirmPassword')" class="p-error block mt-1">
+            {{ getFieldError(signupForm, 'confirmPassword') }}
+          </small>
+        </div>
+
+        <p-button 
+          type="submit"
+          label="Create Account"
+          icon="pi pi-user-plus"
+          [loading]="loading"
+          [disabled]="signupForm.invalid"
+          styleClass="p-button-success w-full mt-3">
+        </p-button>
+      </form>
+
+      <ng-template pTemplate="footer">
+        <div class="p-4 pt-0">
+          <p-divider></p-divider>
+          <div class="text-center mt-3">
+            <p *ngIf="isLoginMode" class="m-0" style="color: var(--tennis-gray);">
+              Don't have an account? 
+              <a (click)="toggleMode()" class="cursor-pointer font-semibold" style="color: var(--tennis-green); text-decoration: none;">Sign up</a>
+            </p>
+            <p *ngIf="!isLoginMode" class="m-0" style="color: var(--tennis-gray);">
+              Already have an account? 
+              <a (click)="toggleMode()" class="cursor-pointer font-semibold" style="color: var(--tennis-green); text-decoration: none;">Sign in</a>
+            </p>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

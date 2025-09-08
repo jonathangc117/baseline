@@ -1,0 +1,77 @@
+<div class="players-container">
+  <div class="players-header">
+    <h1>Tennis Players</h1>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p>Loading players...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p class="error-message">{{ error }}</p>
+    <p-button
+      label="Retry"
+      icon="pi pi-refresh"
+      (onClick)="loadPlayers()">
+    </p-button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="players-grid">
+    <p-card
+      *ngFor="let player of players"
+      [header]="player.name"
+      styleClass="player-card">
+
+      <ng-template pTemplate="header">
+        <div class="player-header">
+          <!-- <p-avatar
+            [image]="player.avatar_url"
+            [label]="player.name.charAt(0)"
+            size="large"
+            shape="circle">
+          </p-avatar> -->
+          <div class="player-info">
+            <h3>{{ player.name }}</h3>
+            <p class="player-email">{{ player.email }}</p>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- <div class="player-stats">
+        <div class="stat-item">
+          <span class="stat-label">Skill Level:</span>
+          <p-tag
+            [value]="player.skill_level"
+            [severity]="getSkillLevelColor(player.skill_level)">
+          </p-tag>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">Record:</span>
+          <span class="stat-value">{{ player.wins }}W - {{ player.losses }}L</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">Win Rate:</span>
+          <span class="stat-value">{{ getWinRate(player.wins, player.losses) }}%</span>
+        </div>
+      </div> -->
+
+      <ng-template pTemplate="footer">
+        <div class="player-actions">
+          <p-button
+            label="View Profile"
+            icon="pi pi-user"
+            styleClass="p-button-outlined p-button-sm">
+          </p-button>
+          <p-button
+            label="Challenge"
+            icon="pi pi-send"
+            styleClass="p-button-success p-button-sm">
+          </p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+
+</div>

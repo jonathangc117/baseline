@@ -1,0 +1,130 @@
+.players-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.players-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  
+  h1 {
+    margin: 0;
+    color: var(--tennis-green);
+  }
+}
+
+.loading-container,
+.error-container,
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  
+  .error-message {
+    color: var(--tennis-red);
+    margin-bottom: 1rem;
+  }
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.player-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.player-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  
+  .player-info {
+    flex: 1;
+    
+    h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--tennis-green);
+    }
+    
+    .player-email {
+      margin: 0;
+      color: var(--tennis-gray);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.player-stats {
+  padding: 1rem;
+  
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .stat-label {
+      font-weight: 500;
+      color: var(--tennis-green);
+    }
+    
+    .stat-value {
+      font-weight: 600;
+      color: var(--tennis-light-green);
+    }
+  }
+}
+
+.player-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.empty-state {
+  h3 {
+    color: var(--tennis-green);
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    color: var(--tennis-gray);
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .players-container {
+    padding: 1rem;
+  }
+  
+  .players-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .players-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .player-actions {
+    flex-direction: column;
+  }
+}

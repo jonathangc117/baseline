@@ -1,0 +1,34 @@
+// Custom PrimeNG overrides
+:host ::ng-deep {
+  .p-card {
+    border: none;
+  }
+  
+  .p-card-header {
+    padding: 0;
+  }
+  
+  .p-card-body {
+    padding: 0;
+  }
+  
+  .p-card-footer {
+    padding: 0;
+  }
+  
+  .p-password {
+    width: 100%;
+  }
+  
+  .p-password input {
+    width: 100%;
+  }
+  
+  .p-message {
+    margin: 0;
+  }
+  
+  .p-divider {
+    margin: 0;
+  }
+}
