@@ -1,1 +1,29 @@
-<p>singles-matches works!</p>
+<div class="singles-matches">
+  <div class="header">
+    <h2>Singles Matches</h2>
+    <button pButton type="button" label="Add Match" (click)="addMatch()"></button>
+  </div>
+
+  <p-table [value]="matches" [loading]="loading" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Date</th>
+        <th>Player 1</th>
+        <th>Player 2</th>
+        <th>Score</th>
+        <!-- <th>Surface</th> -->
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-match>
+      <tr>
+        <td>{{ match.date | date:'yyyy-MM-dd' }}</td>
+        <td>{{ match.player1_player?.name || match.player1_name }}</td>
+        <td>{{ match.player2_player?.name || match.player2_name }}</td>
+        <td>{{ match.score }}</td>
+        <!-- <td>
+          <p-tag [value]="match.surface | titlecase"></p-tag>
+        </td> -->
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -18,6 +18,10 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
+        path: 'add',
+        loadComponent: () => import('./pages/my-matches/add-match/add-match.component').then(m => m.AddMatchComponent)
+      },
+      {
         path: 'singles',
         loadComponent: () => import('./pages/my-matches/singles-matches/singles-matches.component').then(m => m.SinglesMatchesComponent)
       },

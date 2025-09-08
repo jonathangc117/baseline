@@ -61,3 +61,11 @@ button, .p-button {
   color: #e74c3c;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
+
+/* Global override: remove padding from all PrimeFlex column classes */
+.col,
+[class^="col-"],
+[class*=" col-"],
+[class*=":col-"] {
+  padding: 0 !important;
+}

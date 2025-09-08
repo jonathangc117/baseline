@@ -129,13 +129,17 @@ export class SupabaseService {
     }
     
     let query = this.client
-      .from('matches')
-      .select('*')
+      .from('singles_match')
+      .select(`
+        *,
+        player1_player:player!player1(id,name,email),
+        player2_player:player!player2(id,name,email)
+      `)
       .order('created_at', { ascending: false });
     
-    if (userId) {
-      query = query.or(`player1_id.eq.${userId},player2_id.eq.${userId}`);
-    }
+    // if (userId) {
+    //   query = query.or(`player1.eq.${userId},player2.eq.${userId}`);
+    // }
     
     return await query;
   }
