@@ -1,0 +1,116 @@
+<div class="add-match-container">
+  <h2>Add Match</h2>
+
+  <p-message *ngIf="error" severity="error" [text]="error"></p-message>
+  <p-message *ngIf="success" severity="success" [text]="success"></p-message>
+
+  <form [formGroup]="form">
+
+    <div class="flex flex-row justify-content-between">
+      <div class="field">
+        <label>Date</label>
+        <p-datepicker formControlName="matchDate" inputId="matchDate" dateFormat="yy-mm-dd"></p-datepicker>
+        <small class="p-error" *ngIf="submitted && form.get('matchDate')?.errors">Date is required</small>
+      </div>
+
+      <div class="field">
+        <label>Best of</label>
+        <p-select class="w-full" formControlName="bestOf" [options]="bestOfOptions" optionLabel="label" optionValue="value" placeholder="Select"></p-select>
+      </div>
+
+    </div>
+
+
+    <div class="flex flex-column md:flex-row justify-content-between align-items-center">
+
+      <div class="flex flex-column field w-full md:w-5 gap-3">
+        <div class="flex flex-row justify-content-between">
+          <label>Player 1</label>
+          <div class="flex gap-2">
+            <label for="useMePlayer1">Me</label>
+            <p-checkbox formControlName="useMePlayer1" binary="true" inputId="useMePlayer1" (onChange)="onUseMeToggle()"></p-checkbox>
+          </div>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <p-select class="w-full" formControlName="player1" [options]="players" optionLabel="label" optionValue="value" placeholder="Select player"></p-select>
+        </div>
+        <small class="p-error" *ngIf="submitted && form.get('player1')?.errors">Player 1 is required</small>
+      </div>
+
+      <div class="w-full md:w-2 text-center md:flex align-items-center justify-content-center">VS</div>
+
+      <div class="flex flex-column field w-full md:w-5 gap-3">
+        <div class="flex flex-row justify-content-between">
+          <label>Player 2</label>
+          <div class="flex gap-2">
+            <label for="player2NotRegistered">Not registered</label>
+            <p-checkbox formControlName="player2NotRegistered" binary="true" inputId="player2NotRegistered"></p-checkbox>
+          </div>
+        </div>
+
+        <ng-container *ngIf="!form.get('player2NotRegistered')?.value; else notRegisteredTpl">
+          <p-select class="w-full" formControlName="player2" [options]="players" optionLabel="label" optionValue="value" placeholder="Select player"></p-select>
+          <small class="p-error" *ngIf="submitted && form.get('player2')?.errors">Player 2 is required</small>
+        </ng-container>
+        <ng-template #notRegisteredTpl>
+          <input class="w-full" pInputText formControlName="player2Name" placeholder="Enter player name" />
+          <small class="p-error" *ngIf="submitted && form.get('player2Name')?.errors">Player 2 name is required</small>
+        </ng-template>
+      </div>
+
+    </div>
+
+    <div class="field">
+      <label>Sets</label>
+      <div formArrayName="sets" class="flex flex-column md:flex-row md:flex-wrap ">
+        <div *ngFor="let group of sets.controls; let i = index" [formGroupName]="i" class="flex flex-row align-items-start gap-2">
+
+          <div class="flex flex-row col-11 md:w-auto gap-2 md:gap-4">
+            <div class="flex flex-column col-6 md:w-auto">
+              <label for="set">Games</label>
+              <input pInputText formControlName="set" placeholder="e.g. 7-6" />
+              <small class="p-error" *ngIf="submitted && group.get('set')?.errors">Set must be like 6-4</small>
+            </div>
+
+            <div class="flex flex-column col-6 md:w-auto">
+              <label for="tiebreak">Tiebreak</label>
+              <input *ngIf="group.get('tiebreak')" pInputText formControlName="tiebreak" placeholder="Tiebreak score" />
+              <small class="p-error" *ngIf="submitted && group.get('tiebreak')?.errors">Tiebreak must be like 7-5</small>
+            </div>
+
+          </div>
+
+          <button pButton type="button" icon="pi pi-times" class="p-button-text p-button-danger mt-4" (click)="removeSet(i)"></button>
+        </div>
+      </div>
+      <button class="mt-2" pButton type="button" icon="pi pi-plus" label="Add set" (click)="addSet()" [disabled]="!canAddSet()"></button>
+      <small class="p-error" *ngIf="!canAddSet()">Reached maximum sets</small>
+      <small class="p-error" *ngIf="submitted && sets.length === 0">Add at least one set</small>
+    </div>
+
+    <div class="field">
+      <label>Winner</label>
+      <p-select class="w-full" formControlName="won" [options]="winnerOptions" optionLabel="label" optionValue="value" [disabled]="!hasTwoPlayers()"></p-select>
+    </div>
+
+    <!-- <div class="field">
+      <label>Surface</label>
+      <p-dropdown formControlName="surface" [options]="[
+        { label: 'Hard', value: 'hard' },
+        { label: 'Clay', value: 'clay' },
+        { label: 'Grass', value: 'grass' }
+      ]"></p-dropdown>
+    </div> -->
+
+    <!-- <div class="field">
+      <label>Notes</label>
+      <input pInputText type="text" formControlName="notes" placeholder="Optional" />
+    </div> -->
+
+    <button pButton label="Save" [disabled]="loading" (click)="submit()"></button>
+    
+  </form>
+</div>
+
+

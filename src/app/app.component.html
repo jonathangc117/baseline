@@ -1,2 +1,4 @@
-<app-bottom-menu *ngIf="showMenu" />
+@defer (when showMenu) {
+  <app-bottom-menu />
+}
 <router-outlet />
