@@ -60,7 +60,8 @@
       <ng-template pTemplate="footer">
         <div class="player-actions">
           <p-button
-            label="View Profile"
+            (onClick)="onPlayerClick(player.id)"
+            label="View Player"
             icon="pi pi-user"
             styleClass="p-button-outlined p-button-sm">
           </p-button>

@@ -1,1 +1,56 @@
-<p>my-profile works!</p>
+<div *ngIf="loading">Loading...</div>
+
+<p-card *ngIf="!loading && user">
+  <div class="flex gap-3 align-items-center">
+    <ng-container *ngIf="player?.profile_picture; else initialsTpl">
+      <p-avatar [image]="player.profile_picture" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+    </ng-container>
+    <ng-template #initialsTpl>
+      <p-avatar [label]="(player?.name || user.email)?.[0]" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+    </ng-template>
+    <div class="flex flex-column">
+      <div class="text-lg font-bold">{{ player?.name || user.email }}</div>
+      <div class="text-sm">{{ user.email }}</div>
+    </div>
+  </div>
+  <div class="flex gap-3 align-items-center">
+    <p-avatar [image]="player?.profile_picture" [label]="(player?.name || user.email)?.[0]" shape="circle" size="large"></p-avatar>
+    <div class="flex flex-column">
+      <div class="text-lg font-bold">{{ player?.name || user.email }}</div>
+      <div class="text-sm">{{ user.email }}</div>
+    </div>
+  </div>
+
+  <img src="{{ player?.profile_picture }}" alt="Profile Picture">
+
+  {{ player?.profile_picture }}
+
+  <div class="mt-3" *ngIf="!isEditing; else editTpl">
+    <div class="flex flex-column gap-2">
+        
+      <div><strong>Name:</strong> {{ player?.name || '-' }}</div>
+      <div><strong>Email:</strong> {{ user.email }}</div>
+    </div>
+    <div class="mt-2">
+      <button pButton type="button" label="Edit" (click)="edit()"></button>
+    </div>
+  </div>
+
+  <ng-template #editTpl>
+    <form [formGroup]="form" class="flex flex-column gap-2">
+      <span class="p-float-label">
+        <input pInputText id="name" formControlName="name" />
+        <label for="name">Name</label>
+      </span>
+      <span class="p-float-label">
+        <input pInputText id="email" formControlName="email" [disabled]="true" />
+        <label for="email">Email</label>
+      </span>
+      <p-fileUpload name="avatar" mode="basic" chooseLabel="Upload Avatar" (onSelect)="onAvatarUpload($event)"></p-fileUpload>
+      <div class="flex gap-2 mt-2">
+        <button pButton type="button" label="Save" (click)="save()"></button>
+        <button pButton type="button" label="Cancel" class="p-button-text" (click)="cancel()"></button>
+      </div>
+    </form>
+  </ng-template>
+</p-card>

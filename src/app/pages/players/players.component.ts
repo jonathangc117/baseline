@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { SupabaseService } from '../../services/supabase.service';
+import { Router } from '@angular/router';
 
 interface Player {
   id: string;
@@ -29,8 +30,13 @@ export class PlayersComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
+  onPlayerClick(id: string) {
+    this.router.navigate(['/players', id]);
+  }
+
   constructor(
     private supabaseService: SupabaseService,
+    private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 

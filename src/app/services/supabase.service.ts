@@ -144,6 +144,76 @@ export class SupabaseService {
     return await query;
   }
 
+  async getMatchesPaged(params: { page: number; pageSize: number; search?: string }) {
+    if (!isPlatformBrowser(this.platformId) || !this.client) {
+      return { data: [], count: 0, error: null } as any;
+    }
+
+    const { page, pageSize, search } = params;
+    const from = page * pageSize;
+    const to = from + pageSize - 1;
+
+    let query = this.client
+      .from('singles_match')
+      .select(`
+        *,
+        player1_player:player!player1(id,name,email),
+        player2_player:player!player2(id,name,email)
+      `, { count: 'exact' })
+      .order('date', { ascending: false })
+      .range(from, to);
+
+    const q = (search || '').trim();
+    if (q) {
+      const like = `*${q}*`;
+      const orFilters: string[] = [
+        `player2_name.ilike.${like}`
+      ];
+
+      // If the query looks like a set score (e.g., 7-6), search the score array by overlap
+      const setToken = q.match(/^\d+\s*-\s*\d+$/) ? q.replace(/\s+/g, '') : null;
+      if (setToken) {
+        orFilters.push(`score.ov.{${setToken}}`);
+      }
+
+      // Fetch matching player ids by name to search by foreign keys
+      const { data: playersMatch } = await this.client
+        .from('player')
+        .select('id')
+        .ilike('name', like);
+
+      const playerIds = (playersMatch || []).map((p: any) => p.id);
+      if (playerIds.length > 0) {
+        const ids = `(${playerIds.join(',')})`;
+        orFilters.push(`player1.in.${ids}`);
+        orFilters.push(`player2.in.${ids}`);
+      }
+
+      if (orFilters.length > 0) {
+        query = query.or(orFilters.join(','));
+      }
+    }
+
+    return await query;
+  }
+
+  async getMatchById(id: string) {
+    if (!isPlatformBrowser(this.platformId) || !this.client) {
+      return { data: null, error: { message: 'Not available on server' } };
+    }
+
+    // Use the same embeds as list to keep fields consistent
+    return await this.client
+      .from('singles_match')
+      .select(`
+        *,
+        player1_player:player!player1(id,name,email),
+        player2_player:player!player2(id,name,email)
+      `)
+      .eq('id', id)
+      .single();
+  }
+
   async getPlayers() {
     if (!isPlatformBrowser(this.platformId) || !this.client) {
       return { data: [], error: null };
@@ -152,6 +222,28 @@ export class SupabaseService {
       .from('player')
       .select('*')
       .order('name', { ascending: true });
+  }
+
+  async getPlayerById(id: string) {
+    if (!isPlatformBrowser(this.platformId) || !this.client) {
+      return { data: null, error: { message: 'Not available on server' } };
+    }
+    return await this.client
+      .from('player')
+      .select('*')
+      .eq('id', id)
+      .single();
+  }
+
+  async getPlayerByUserId(userId: string) {
+    if (!isPlatformBrowser(this.platformId) || !this.client) {
+      return { data: null, error: { message: 'Not available on server' } };
+    }
+    return await this.client
+      .from('player')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
   }
 
   async getUserProfile(userId: string) {

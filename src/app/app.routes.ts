@@ -22,6 +22,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/my-matches/add-match/add-match.component').then(m => m.AddMatchComponent)
       },
       {
+        path: 'view/:id',
+        loadComponent: () => import('./pages/my-matches/view-match/view-match.component').then(m => m.ViewMatchComponent)
+      },
+      {
         path: 'singles',
         loadComponent: () => import('./pages/my-matches/singles-matches/singles-matches.component').then(m => m.SinglesMatchesComponent)
       },
@@ -49,6 +53,11 @@ export const routes: Routes = [
   {
     path: 'players',
     loadComponent: () => import('./pages/players/players.component').then(m => m.PlayersComponent),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'players/:id',
+    loadComponent: () => import('./pages/players/player/player.component').then(m => m.PlayerComponent),
     canActivate: [AuthGuard]
   },
   {

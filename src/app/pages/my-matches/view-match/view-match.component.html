@@ -1,0 +1,21 @@
+<div *ngIf="!loading && match" class="flex flex-column gap-2">
+
+  <div>
+
+  </div>
+
+  <div class="flex flex-column gap-2">
+    <div>Date: {{ match.date | date:'yyyy-MM-dd' }}</div>
+    <div>Player 1: {{ match.player1_player?.name || match.player1_name }}</div>
+    <div>Player 2: {{ match.player2_player?.name || match.player2_name }}</div>
+    <div>Score: {{ match.score }}</div>
+    <div>Best of: {{ match.best_of }}</div>
+    <div>Winner: <p-tag [value]="match.winner ? 'Player 1' : 'Player 2'"></p-tag></div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="Back" (click)="router.navigate(['/my-matches/singles'])"></button>
+  </ng-template>
+</div>
+
+<div *ngIf="loading">Loading...</div>
+
