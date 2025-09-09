@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
+import { AvatarModule } from 'primeng/avatar';
 import { SupabaseService } from '../../../services/supabase.service';
 
 @Component({
   selector: 'app-view-match',
   standalone: true,
-  imports: [CommonModule, CardModule, TagModule, ButtonModule],
+  imports: [CommonModule, CardModule, TagModule, ButtonModule, AvatarModule, RouterModule],
   templateUrl: './view-match.component.html',
   styleUrls: ['./view-match.component.scss']
 })
 export class ViewMatchComponent implements OnInit {
   loading = false;
   match: any;
-
+  user: any;
   constructor(
     private route: ActivatedRoute,
     public router: Router,
@@ -32,10 +33,15 @@ export class ViewMatchComponent implements OnInit {
     this.loading = true;
     try {
       const { data } = await this.supabaseService.getMatchById(id);
+      this.user = await this.supabaseService.getCurrentUser();
       this.match = data;
     } finally {
       this.loading = false;
     }
+  }
+
+  claimPlayer() {
+    this.router.navigate(['/my-matches/add']);
   }
 }
 

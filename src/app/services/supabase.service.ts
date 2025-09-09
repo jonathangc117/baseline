@@ -207,8 +207,8 @@ export class SupabaseService {
       .from('singles_match')
       .select(`
         *,
-        player1_player:player!player1(id,name,email),
-        player2_player:player!player2(id,name,email)
+        player1_player:player!player1(id,name,email, profile_picture),
+        player2_player:player!player2(id,name,email, profile_picture)
       `)
       .eq('id', id)
       .single();

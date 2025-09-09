@@ -1,17 +1,127 @@
 <div *ngIf="!loading && match" class="flex flex-column gap-2">
 
-  <div>
+  <div class="flex flex-row justify-content-between mt-6">
+
+    <div class="flex flex-column">
+
+      <div class="flex flex-row justify-content-between">
+        <div class="flex flex-row gap-3 justify-content-center">
+            <ng-container *ngIf="match?.player1_player?.profile_picture; else initialsTpl">
+              <ng-container *ngIf="match.player1_player?.id; else p1ImgNoLink">
+                <a [routerLink]="['/players', match.player1_player.id]">
+                  <p-avatar [image]="match.player1_player?.profile_picture" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+                </a>
+              </ng-container>
+              <ng-template #p1ImgNoLink>
+                <p-avatar [image]="match.player1_player?.profile_picture" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+              </ng-template>
+            </ng-container>
+            <ng-template #initialsTpl>
+              <ng-container *ngIf="match.player1_player?.id; else p1InitNoLink">
+                <a [routerLink]="['/players', match.player1_player.id]">
+                  <p-avatar [label]="(match.player1_player?.name || match.player1_player?.email || match.player1_name)?.[0]" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+                </a>
+              </ng-container>
+              <ng-template #p1InitNoLink>
+                <p-avatar [label]="(match.player1_player?.name || match.player1_player?.email || match.player1_name)?.[0]" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+              </ng-template>
+            </ng-template>
+        </div>
+      </div>
+
+      <div class="flex flex-column justify-content-center align-items-center">
+        <div class="text-lg font-bold flex flex-column justify-content-center align-items-center" [ngClass]="{ 'winner-animate': match?.winner === true }">
+          <a *ngIf="match.player1_player?.id; else p1Text" [routerLink]="['/players', match.player1_player.id]">{{ match.player1_player?.name || match.player1_name }}</a>
+          <ng-template #p1Text>{{ match.player1_player?.name || match.player1_name }}</ng-template>
+        </div>
+
+        <div class="mt-2" *ngIf="!match.player1_player && match.player2_player?.user_id !== user?.data?.user?.id && !loading">
+          <button
+          
+          pButton
+          type="button"
+          label="Challenge"
+          (click)="claimPlayer()"></button>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="flex flex-row justify-content-between">
+      <div class="flex flex-row gap-3 justify-content-center align-items-center">
+        <div class="text-lg font-bold">{{ match.score }}</div>
+      </div>
+    </div>
+
+    <div class="flex flex-column">
+
+      <div class="flex flex-row justify-content-between">
+        <div class="flex flex-row gap-3 justify-content-center">
+          <ng-container *ngIf="match?.player2_player?.profile_picture; else initialsTpl2">
+            <ng-container *ngIf="match.player2_player?.id; else p2ImgNoLink">
+              <a [routerLink]="['/players', match.player2_player.id]">
+                <p-avatar [image]="match.player2_player?.profile_picture" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+              </a>
+            </ng-container>
+            <ng-template #p2ImgNoLink>
+              <p-avatar [image]="match.player2_player?.profile_picture" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+            </ng-template>
+          </ng-container>
+          <ng-template #initialsTpl2>
+            <ng-container *ngIf="match.player2_player?.id; else p2InitNoLink">
+              <a [routerLink]="['/players', match.player2_player.id]">
+                <p-avatar [label]="(match.player2_player?.name || match.player2_player?.email || match.player2_name)?.[0]" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+              </a>
+            </ng-container>
+            <ng-template #p2InitNoLink>
+              <p-avatar [label]="(match.player2_player?.name || match.player2_player?.email || match.player2_name)?.[0]" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+            </ng-template>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="flex flex-column justify-content-center align-items-center">
+        <div class="text-lg font-bold" [ngClass]="{ 'winner-animate': match?.winner === false }">
+          <a *ngIf="match.player2_player?.id; else p2Text" [routerLink]="['/players', match.player2_player.id]">{{ match.player2_player?.name || match.player2_name }}</a>
+          <ng-template #p2Text>{{ match.player2_player?.name || match.player2_name }}</ng-template>
+        </div>
+
+        <div class="mt-2" *ngIf="!match.player2_player && match.player1_player?.user_id !== user?.data?.user?.id && !loading">
+          <button
+          pButton
+          type="button"
+          label="Claim"
+          (click)="claimPlayer()"></button>
+        </div>
+
+      </div>
+    </div>
+
+
 
   </div>
 
-  <div class="flex flex-column gap-2">
-    <div>Date: {{ match.date | date:'yyyy-MM-dd' }}</div>
-    <div>Player 1: {{ match.player1_player?.name || match.player1_name }}</div>
-    <div>Player 2: {{ match.player2_player?.name || match.player2_name }}</div>
-    <div>Score: {{ match.score }}</div>
-    <div>Best of: {{ match.best_of }}</div>
-    <div>Winner: <p-tag [value]="match.winner ? 'Player 1' : 'Player 2'"></p-tag></div>
+  <div class="mt-3">
+    <div class="flex flex-column gap-2">
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Winner:</strong> <div>{{ match.winner ?  match.player1_player?.name || match.player1_name  : match.player2_player?.name || match.player2_name }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Date:</strong> <div>{{ match.date | date:'yyyy-MM-dd' }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Best of:</strong> <div>{{ match.best_of }}</div>
+        </div>
+      </p-card>
+    </div>
   </div>
+
   <ng-template pTemplate="footer">
     <button pButton label="Back" (click)="router.navigate(['/my-matches/singles'])"></button>
   </ng-template>

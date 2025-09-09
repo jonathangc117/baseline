@@ -16,63 +16,25 @@
     </p-button>
   </div>
 
-  <div *ngIf="!loading && !error" class="players-grid">
-    <p-card
-      *ngFor="let player of players"
-      [header]="player.name"
-      styleClass="player-card">
-
+  <div *ngIf="!loading && !error">
+    <p-table [value]="players" [paginator]="true" [rows]="10">
       <ng-template pTemplate="header">
-        <div class="player-header">
-          <!-- <p-avatar
-            [image]="player.avatar_url"
-            [label]="player.name.charAt(0)"
-            size="large"
-            shape="circle">
-          </p-avatar> -->
-          <div class="player-info">
-            <h3>{{ player.name }}</h3>
-            <p class="player-email">{{ player.email }}</p>
-          </div>
-        </div>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
       </ng-template>
-
-      <!-- <div class="player-stats">
-        <div class="stat-item">
-          <span class="stat-label">Skill Level:</span>
-          <p-tag
-            [value]="player.skill_level"
-            [severity]="getSkillLevelColor(player.skill_level)">
-          </p-tag>
-        </div>
-
-        <div class="stat-item">
-          <span class="stat-label">Record:</span>
-          <span class="stat-value">{{ player.wins }}W - {{ player.losses }}L</span>
-        </div>
-
-        <div class="stat-item">
-          <span class="stat-label">Win Rate:</span>
-          <span class="stat-value">{{ getWinRate(player.wins, player.losses) }}%</span>
-        </div>
-      </div> -->
-
-      <ng-template pTemplate="footer">
-        <div class="player-actions">
-          <p-button
-            (onClick)="onPlayerClick(player.id)"
-            label="View Player"
-            icon="pi pi-user"
-            styleClass="p-button-outlined p-button-sm">
-          </p-button>
-          <p-button
-            label="Challenge"
-            icon="pi pi-send"
-            styleClass="p-button-success p-button-sm">
-          </p-button>
-        </div>
+      <ng-template pTemplate="body" let-player>
+        <tr>
+          <td>{{ player.name }}</td>
+          <td>{{ player.email }}</td>
+          <td>
+            <button pButton type="button" label="View" class="p-button-text" (click)="onPlayerClick(player.id)"></button>
+          </td>
+        </tr>
       </ng-template>
-    </p-card>
+    </p-table>
   </div>
 
 </div>

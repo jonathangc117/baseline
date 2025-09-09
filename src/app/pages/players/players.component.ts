@@ -4,6 +4,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
+import { TableModule } from 'primeng/table';
 import { SupabaseService } from '../../services/supabase.service';
 import { Router } from '@angular/router';
 
@@ -21,7 +22,7 @@ interface Player {
 @Component({
   selector: 'app-players',
   standalone: true,
-  imports: [CommonModule, CardModule, ButtonModule, AvatarModule, TagModule],
+  imports: [CommonModule, CardModule, ButtonModule, AvatarModule, TagModule, TableModule],
   templateUrl: './players.component.html',
   styleUrl: './players.component.scss'
 })

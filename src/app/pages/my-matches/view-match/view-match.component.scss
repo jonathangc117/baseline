@@ -1,5 +1,25 @@
+/* Reset link styles within this component so animations are visible */
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
 .p-card {
   width: 100%;
+}
+
+@keyframes winnerPulse {
+  0% { color: #22c55e; }
+  33% { color: #16a34a; }
+  66% { color: #84cc16; }
+  100% { color: #22c55e; }
+}
+
+.winner-animate {
+  animation: winnerPulse 1s ease-in-out infinite;
 }
 
 

@@ -1,35 +1,69 @@
 <div *ngIf="loading">Loading...</div>
 
-<p-card *ngIf="!loading && user">
-  <div class="flex gap-3 align-items-center">
-    <ng-container *ngIf="player?.profile_picture; else initialsTpl">
-      <p-avatar [image]="player.profile_picture" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
-    </ng-container>
-    <ng-template #initialsTpl>
-      <p-avatar [label]="(player?.name || user.email)?.[0]" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
-    </ng-template>
-    <div class="flex flex-column">
-      <div class="text-lg font-bold">{{ player?.name || user.email }}</div>
-      <div class="text-sm">{{ user.email }}</div>
-    </div>
-  </div>
-  <div class="flex gap-3 align-items-center">
-    <p-avatar [image]="player?.profile_picture" [label]="(player?.name || user.email)?.[0]" shape="circle" size="large"></p-avatar>
-    <div class="flex flex-column">
-      <div class="text-lg font-bold">{{ player?.name || user.email }}</div>
-      <div class="text-sm">{{ user.email }}</div>
-    </div>
-  </div>
+<div *ngIf="!loading && user" class="flex flex-column gap-3 w-full">
+  <p-card class="flex flex-column gap-3 ">
+    <div class="flex flex-row gap-3 justify-content-center">
+        <ng-container *ngIf="player?.profile_picture; else initialsTpl">
+          <p-avatar [image]="player.profile_picture" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+        </ng-container>
+        <ng-template #initialsTpl>
+          <p-avatar [label]="(player?.name || user.email)?.[0]" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+        </ng-template>
 
-  <img src="{{ player?.profile_picture }}" alt="Profile Picture">
-
-  {{ player?.profile_picture }}
+        <div class="flex flex-column">
+          <div class="text-lg font-bold">{{ player?.name || user.email }}</div>
+          <div class="text-sm">{{ user.email }}</div>
+        </div>
+    </div>
+  </p-card>
 
   <div class="mt-3" *ngIf="!isEditing; else editTpl">
     <div class="flex flex-column gap-2">
-        
-      <div><strong>Name:</strong> {{ player?.name || '-' }}</div>
-      <div><strong>Email:</strong> {{ user.email }}</div>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Age:</strong> <div>{{ player?.age ?? '-' }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Gender:</strong> <div>{{ player?.gender === true ? 'Male' : player?.gender === false ? 'Female' : '-' }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Weight:</strong> <div>{{ player?.weight ?? '-' }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Height:</strong> <div>{{ player?.height ?? '-' }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Turned Pro:</strong> <div>{{ player?.turned_pro ? (player.turned_pro | date:'yyyy-MM-dd') : '-' }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Birth Place:</strong> <div>{{ player?.birth_place || '-' }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Plays:</strong> <div>{{ player?.plays || '-' }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Coach:</strong> <div>{{ player?.coach || '-' }}</div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="flex flex-row justify-content-between">
+            <strong>Country:</strong> <div>{{ player?.country || '-' }}</div>
+        </div>
+      </p-card>
     </div>
     <div class="mt-2">
       <button pButton type="button" label="Edit" (click)="edit()"></button>
@@ -37,15 +71,62 @@
   </div>
 
   <ng-template #editTpl>
-    <form [formGroup]="form" class="flex flex-column gap-2">
-      <span class="p-float-label">
-        <input pInputText id="name" formControlName="name" />
-        <label for="name">Name</label>
-      </span>
-      <span class="p-float-label">
-        <input pInputText id="email" formControlName="email" [disabled]="true" />
-        <label for="email">Email</label>
-      </span>
+    <form [formGroup]="form" class="flex flex-column gap-2 md:gap-auto">
+
+      <div class="flex flex-column md:flex-row md:justify-content-between gap-2 md:gap-auto">
+        <div class="flex flex-column md:col-4 md:px-4">
+          <label for="name">Name</label>
+          <input pInputText id="name" formControlName="name" />
+        </div>
+        <div class="flex flex-column md:col-4 md:px-4">
+          <label for="email">Email</label>
+          <input pInputText id="email" formControlName="email" [disabled]="true" />
+        </div>
+        <div class="flex flex-column md:col-4 md:px-4">
+          <label for="age">Age</label>
+          <p-inputNumber inputId="age" formControlName="age"></p-inputNumber>
+        </div>
+      </div>
+
+      <div class="flex flex-column md:flex-row md:justify-content-between gap-2 md:gap-auto">
+        <div class="flex flex-column md:col-4 md:px-4">
+          <label for="gender">Gender</label>
+          <p-select inputId="gender" formControlName="gender" [options]="[{label:'Male',value:true},{label:'Female',value:false}]" optionLabel="label" optionValue="value" placeholder="Gender"></p-select>
+        </div>
+        <div class="flex flex-column md:col-4 md:px-4">
+          <label for="weight">Weight(kg)</label>
+          <p-inputNumber inputId="weight" formControlName="weight"></p-inputNumber>
+        </div>
+        <div class="flex flex-column md:col-4 md:px-4">
+          <label for="height">Height (m)</label>
+          <p-inputNumber inputId="height" formControlName="height" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" [step]="0.01" suffix=" m"></p-inputNumber>
+        </div>
+      </div>
+
+      <div class="flex flex-column md:flex-row md:justify-content-between gap-2 md:gap-auto">
+        <div class="flex flex-column md:col-4 md:px-4">
+          <label for="turned_pro">Turned Pro</label>
+          <p-datepicker class="w-full" inputId="turned_pro" formControlName="turned_pro" dateFormat="yy-mm-dd"></p-datepicker>
+        </div>
+        <div class="flex flex-column md:col-4 md:px-4">
+          <label for="birth_place">Birth Place</label>
+          <input pInputText id="birth_place" formControlName="birth_place" />
+        </div>
+        <div class="flex flex-column md:col-4 md:px-4">
+          <label for="plays">Plays</label>
+          <input pInputText id="plays" formControlName="plays" />
+        </div>
+      </div>
+      <div class="flex flex-column md:flex-row md:justify-content-start gap-2 md:gap-auto">
+          <div class="flex flex-column md:col-4 md:px-4">
+            <label for="coach">Coach</label>
+            <input pInputText id="coach" formControlName="coach" />
+          </div>
+          <div class="flex flex-column md:col-4 md:px-4">
+            <label for="country">Country</label>
+            <input pInputText id="country" formControlName="country" />
+          </div>
+      </div>
       <p-fileUpload name="avatar" mode="basic" chooseLabel="Upload Avatar" (onSelect)="onAvatarUpload($event)"></p-fileUpload>
       <div class="flex gap-2 mt-2">
         <button pButton type="button" label="Save" (click)="save()"></button>
@@ -53,4 +134,4 @@
       </div>
     </form>
   </ng-template>
-</p-card>
+</div>

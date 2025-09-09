@@ -19,6 +19,7 @@ export class PlayerComponent implements OnInit {
   loading = false;
   player: any;
   error: string | null = null;
+  user: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,10 +40,15 @@ export class PlayerComponent implements OnInit {
         this.error = error.message || 'Failed to load player';
       } else {
         this.player = data;
+        this.user = await this.supabaseService.getCurrentUser();
       }
     } finally {
       this.loading = false;
     }
+  }
+
+  challengePlayer() {
+    this.router.navigate(['/my-matches/add']);
   }
 }
 
