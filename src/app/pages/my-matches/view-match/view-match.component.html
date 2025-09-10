@@ -4,7 +4,7 @@
 
     <div class="flex flex-column">
 
-      <div class="flex flex-row justify-content-between">
+      <div class="flex flex-row justify-content-center">
         <div class="flex flex-row gap-3 justify-content-center">
             <ng-container *ngIf="match?.player1_player?.profile_picture; else initialsTpl">
               <ng-container *ngIf="match.player1_player?.id; else p1ImgNoLink">
@@ -37,14 +37,13 @@
 
         <div class="mt-2" *ngIf="!match.player1_player && match.player2_player?.user_id !== user?.data?.user?.id && !loading">
           <button
-          
+
           pButton
           type="button"
-          label="Challenge"
-          (click)="claimPlayer()"></button>
+          label="Claim"
+          (click)="claimPlayer(true)"></button>
         </div>
       </div>
-
 
     </div>
 
@@ -56,7 +55,7 @@
 
     <div class="flex flex-column">
 
-      <div class="flex flex-row justify-content-between">
+      <div class="flex flex-row justify-content-center">
         <div class="flex flex-row gap-3 justify-content-center">
           <ng-container *ngIf="match?.player2_player?.profile_picture; else initialsTpl2">
             <ng-container *ngIf="match.player2_player?.id; else p2ImgNoLink">
@@ -92,7 +91,7 @@
           pButton
           type="button"
           label="Claim"
-          (click)="claimPlayer()"></button>
+          (click)="claimPlayer(false)"></button>
         </div>
 
       </div>
@@ -126,6 +125,8 @@
     <button pButton label="Back" (click)="router.navigate(['/my-matches/singles'])"></button>
   </ng-template>
 </div>
+
+<p-confirmDialog></p-confirmDialog>
 
 <div *ngIf="loading">Loading...</div>
 

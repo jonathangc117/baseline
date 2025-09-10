@@ -57,7 +57,7 @@ export const routes: Routes = [
   },
   {
     path: 'players/:id',
-    loadComponent: () => import('./pages/players/player/player.component').then(m => m.PlayerComponent),
+    loadComponent: () => import('./pages/player/player.component').then(m => m.PlayerComponent),
     canActivate: [AuthGuard]
   },
   {

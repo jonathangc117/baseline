@@ -25,7 +25,7 @@ export class BottomMenuComponent {
       routerLink: '/dashboard'
     },
     {
-      label: 'My Matches',
+      label: 'Matches',
       icon: 'pi pi-calendar',
       items: [
         {

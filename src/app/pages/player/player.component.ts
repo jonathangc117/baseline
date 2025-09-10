@@ -6,7 +6,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
-import { SupabaseService } from '../../../services/supabase.service';
+import { SupabaseService } from '../../services/supabase.service';
 
 @Component({
   selector: 'app-player',

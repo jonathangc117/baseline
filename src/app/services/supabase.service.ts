@@ -99,7 +99,8 @@ export class SupabaseService {
     return await this.client
       .from(tableName)
       .update(data)
-      .eq('id', id);
+      .eq('id', id)
+      .select('*');
   }
 
   async deleteRecord(tableName: string, id: string) {
@@ -207,8 +208,8 @@ export class SupabaseService {
       .from('singles_match')
       .select(`
         *,
-        player1_player:player!player1(id,name,email, profile_picture),
-        player2_player:player!player2(id,name,email, profile_picture)
+        player1_player:player!player1(id,name,email, profile_picture, user_id),
+        player2_player:player!player2(id,name,email, profile_picture, user_id)
       `)
       .eq('id', id)
       .single();
