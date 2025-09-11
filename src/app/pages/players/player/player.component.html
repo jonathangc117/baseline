@@ -1,0 +1,37 @@
+<div *ngIf="loading">Loading...</div>
+
+<div *ngIf="!loading && player">
+  <p-card class="flex flex-column gap-3 ">
+
+    <div class="flex flex-row justify-content-between">
+      <div class="flex flex-row gap-3 justify-content-center">
+          <ng-container *ngIf="player?.profile_picture; else initialsTpl">
+            <p-avatar [image]="player.profile_picture" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+          </ng-container>
+          <ng-template #initialsTpl>
+            <p-avatar [label]="(player?.name || player?.email)?.[0]" shape="circle" size="large" styleClass="w-4rem h-4rem"></p-avatar>
+          </ng-template>
+
+          <div class="flex flex-column">
+            <div class="text-lg font-bold">{{ player?.name || player?.email }}</div>
+            <div class="text-sm">{{ player?.email }}</div>
+          </div>
+      </div>
+
+      <button *ngIf="player?.user_id !== user?.data?.user?.id && !loading" pButton type="button" label="Challenge" (click)="challengePlayer()"></button>
+
+    </div>
+
+  </p-card>
+
+  <app-player-stats-section [player]="player"></app-player-stats-section>
+
+  <p-tabView>
+    <p-tabPanel header="Personal Details">
+      <app-personal-details [player]="player"></app-personal-details>
+    </p-tabPanel>
+  </p-tabView>
+
+</div>
+
+<p-message *ngIf="error" severity="error" [text]="error"></p-message>

@@ -6,12 +6,26 @@ import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
-import { SupabaseService } from '../../services/supabase.service';
+import { TabViewModule } from 'primeng/tabview';
+import { SupabaseService } from '../../../services/supabase.service';
+import { PlayerStatsSectionComponent } from '../../../components/player-stats-section/player-stats-section.component';
+import { PersonalDetailsComponent } from './personal-details/personal-details.component';
+
 
 @Component({
   selector: 'app-player',
   standalone: true,
-  imports: [CommonModule, CardModule, AvatarModule, TagModule, ButtonModule, MessageModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    AvatarModule,
+    TagModule,
+    ButtonModule,
+    MessageModule,
+    TabViewModule,
+    PlayerStatsSectionComponent,
+    PersonalDetailsComponent
+  ],
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
