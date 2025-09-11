@@ -6,7 +6,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { TableModule } from 'primeng/table';
 import { SupabaseService } from '../../services/supabase.service';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet, ActivatedRoute } from '@angular/router';
 
 interface Player {
   id: string;
@@ -22,7 +22,7 @@ interface Player {
 @Component({
   selector: 'app-players',
   standalone: true,
-  imports: [CommonModule, CardModule, ButtonModule, AvatarModule, TagModule, TableModule],
+  imports: [CommonModule, CardModule, ButtonModule, AvatarModule, TagModule, TableModule, RouterOutlet],
   templateUrl: './players.component.html',
   styleUrl: './players.component.scss'
 })
@@ -32,12 +32,13 @@ export class PlayersComponent implements OnInit {
   error: string | null = null;
 
   onPlayerClick(id: string) {
-    this.router.navigate(['/players', id]);
+    this.router.navigate([id], { relativeTo: this.route });
   }
 
   constructor(
     private supabaseService: SupabaseService,
     private router: Router,
+    private route: ActivatedRoute,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -67,6 +68,10 @@ export class PlayersComponent implements OnInit {
     } finally {
       this.loading = false;
     }
+  }
+
+  challengePlayer(id: string) {
+    this.router.navigate(['/my-matches/add']);
   }
 
   // getSkillLevelColor(skillLevel: string): string {

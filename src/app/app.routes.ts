@@ -51,15 +51,25 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'players',
-    loadComponent: () => import('./pages/players/players.component').then(m => m.PlayersComponent),
+    path: 'my-challenges',
+    loadComponent: () => import('./pages/my-challenges/my-challenges.component').then(m => m.MyChallengesComponent),
     canActivate: [AuthGuard]
   },
   {
-    path: 'players/:id',
-    loadComponent: () => import('./pages/players/player/player.component').then(m => m.PlayerComponent),
-    canActivate: [AuthGuard]
+    path: 'players',
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/players/players.component').then(m => m.PlayersComponent)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./pages/players/player/player.component').then(m => m.PlayerComponent)
+      }
+    ]
   },
+  
   {
     path: '',
     redirectTo: 'dashboard',

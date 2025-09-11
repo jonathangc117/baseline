@@ -1,0 +1,92 @@
+<p-dialog 
+  [visible]="visible" 
+  [modal]="true" 
+  [closable]="true" 
+  [draggable]="false" 
+  [resizable]="false"
+  header="Create Challenge"
+  [style]="{ width: '500px', height: '100vh' }"
+  (onHide)="onModalHide()">
+  
+  <form [formGroup]="challengeForm" class="create-challenge-form">
+    <div *ngIf="error" class="error-message">
+      <p-message severity="error" [text]="error"></p-message>
+    </div>
+
+    <div class="form-group">
+      <label for="player-select">Select Player to Challenge:</label>
+      <p-dropdown
+        id="player-select"
+        [options]="players"
+        formControlName="selectedPlayer"
+        optionLabel="name"
+        placeholder="Choose a player"
+        [filter]="true"
+        filterBy="name,email"
+        [showClear]="true"
+        styleClass="w-full">
+        <ng-template pTemplate="selectedItem" let-selectedOption>
+          <div *ngIf="selectedOption" class="flex align-items-center">
+            <span>{{ selectedOption.name || selectedOption.email }}</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="item" let-option>
+          <div class="flex align-items-center">
+            <span>{{ option.name || option.email }}</span>
+            <small class="ml-2 text-muted">{{ option.email }}</small>
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <small *ngIf="challengeForm.get('selectedPlayer')?.invalid && challengeForm.get('selectedPlayer')?.touched" 
+             class="p-error">Player selection is required</small>
+    </div>
+
+    <div class="form-group">
+      <label for="challenge-date">Challenge Date & Time:</label>
+      <p-calendar
+        id="challenge-date"
+        formControlName="date"
+        [showTime]="true"
+        [minDate]="minDate"
+        placeholder="Select date and time"
+        styleClass="w-full">
+      </p-calendar>
+      <small *ngIf="challengeForm.get('date')?.invalid && challengeForm.get('date')?.touched" 
+             class="p-error">Date and time is required</small>
+    </div>
+
+    <div class="form-group">
+      <label for="invitation-message">Invitation Message (Optional):</label>
+      <textarea
+        id="invitation-message"
+        pInputTextarea
+        formControlName="invitation_message"
+        placeholder="Add a message for your challenge..."
+        rows="3"
+        class="w-full">
+      </textarea>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2">
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-secondary"
+        (click)="closeModal()"
+        [disabled]="loading">
+      </button>
+      <button
+        pButton
+        type="button"
+        label="Create Challenge"
+        class="p-button-primary"
+        (click)="createChallenge()"
+        [loading]="loading"
+        [disabled]="challengeForm.invalid">
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>

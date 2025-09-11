@@ -41,6 +41,11 @@ export class BottomMenuComponent {
       ]
     },
     {
+      label: 'Challenges',
+      icon: 'pi pi-bell',
+      routerLink: '/my-challenges'
+    },
+    {
       label: 'My Profile',
       icon: 'pi pi-user',
       routerLink: '/my-profile'

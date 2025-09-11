@@ -1,0 +1,63 @@
+<div class="my-challenges-container">
+  <div class="challenges-header">
+    <h1>My Challenges</h1>
+    <button pButton type="button" label="Create Challenge" (click)="createChallenge()"></button>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p>Loading challenges...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p-message severity="error" [text]="error"></p-message>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <p-card>
+      <div *ngIf="challenges.length === 0" class="no-challenges">
+        <p>No challenges found.</p>
+      </div>
+      
+      <p-table *ngIf="challenges.length > 0" [value]="challenges" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Challenger</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+         <ng-template pTemplate="body" let-challenge>
+           <tr>
+             <td>{{ getChallengerName(challenge) }}</td>
+             <td>{{ challenge.date | date:'short' }}</td>
+             <td>
+               <p-tag [value]="getStatusDisplay(challenge)" [severity]="getStatusSeverity(challenge)"></p-tag>
+             </td>
+             <td>
+               <button *ngIf="challenge.status === 'pending'" 
+                       pButton 
+                       type="button" 
+                       label="Accept" 
+                       class="p-button-success p-button-sm mr-2" 
+                       (click)="acceptChallenge(challenge.id)">
+               </button>
+               <button *ngIf="challenge.status === 'pending'" 
+                       pButton 
+                       type="button" 
+                       label="Decline" 
+                       class="p-button-danger p-button-sm" 
+                       (click)="declineChallenge(challenge.id)">
+               </button>
+             </td>
+           </tr>
+         </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>
+
+<app-create-challenge
+  [(visible)]="showCreateChallengeModal"
+  (challengeCreated)="onChallengeCreated($event)">
+</app-create-challenge>

@@ -247,6 +247,21 @@ export class SupabaseService {
       .single();
   }
 
+  async getChallenges(playerId: string) {
+    if (!isPlatformBrowser(this.platformId) || !this.client) {
+      return { data: [], error: { message: 'Not available on server' } };
+    }
+    return await this.client
+      .from('challenge')
+      .select(`
+        *,
+        player1_player:player!player1_id(id, name, email, profile_picture),
+        player2_player:player!player2_id(id, name, email, profile_picture)
+      `)
+      .or(`player1_id.eq.${playerId},player2_id.eq.${playerId}`)
+      .order('created_at', { ascending: false });
+  }
+
   async getUserProfile(userId: string) {
     if (!isPlatformBrowser(this.platformId) || !this.client) {
       return { data: null, error: { message: 'Not available on server' } };
