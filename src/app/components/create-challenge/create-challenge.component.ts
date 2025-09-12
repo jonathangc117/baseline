@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -32,9 +32,10 @@ interface Player {
     MessageModule,
     DialogModule
   ],
-  templateUrl: './create-challenge.component.html'
+  templateUrl: './create-challenge.component.html',
+  styleUrls: ['./create-challenge.component.scss']
 })
-export class CreateChallengeComponent implements OnInit {
+export class CreateChallengeComponent implements OnInit, OnDestroy {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() challengeCreated = new EventEmitter<any>();
@@ -58,8 +59,8 @@ export class CreateChallengeComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.loadPlayers();
     await this.getCurrentPlayer();
+    await this.loadPlayers();
   }
 
   async loadPlayers() {
@@ -69,7 +70,8 @@ export class CreateChallengeComponent implements OnInit {
         this.error = 'Failed to load players';
         console.error('Error loading players:', error);
       } else {
-        this.players = players || [];
+        // Filter out the current user from the players list
+        this.players = (players || []).filter(player => player.id !== this.currentPlayerId);
       }
     } catch (err) {
       this.error = 'An unexpected error occurred while loading players';
@@ -149,7 +151,19 @@ export class CreateChallengeComponent implements OnInit {
     });
   }
 
+  onModalShow() {
+    this.visible = true;
+    this.visibleChange.emit(true);
+  }
+
   onModalHide() {
+    this.visible = false;
+    this.visibleChange.emit(false);
+    this.resetForm();
+  }
+
+  ngOnDestroy() {
+    // Reset form when component is destroyed
     this.resetForm();
   }
 }

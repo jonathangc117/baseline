@@ -112,6 +112,7 @@ export class LoginComponent implements OnInit {
   }
 
   async onSignup() {
+    debugger
     if (this.signupForm.valid) {
       this.loading = true;
       this.error = null;

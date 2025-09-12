@@ -1,0 +1,11 @@
+// Fix calendar cut-off in modal
+:host ::ng-deep {
+  .p-dialog-content {
+    overflow: visible !important;
+  }
+  
+  .p-calendar .p-datepicker {
+    position: fixed !important;
+    z-index: 10000 !important;
+  }
+}

@@ -35,16 +35,20 @@ export class SupabaseService {
     if (!isPlatformBrowser(this.platformId)) {
       return { data: null, error: { message: 'Not available on server' } };
     }
+    
     const user = await this.client?.auth.signUp({
       email,
-      password
+      password,
+      options: {
+        data: {
+          name: name
+        }
+      }
     });
 
-    if (user?.data?.user && this.client) {
-      await this.client
-        .from('player')
-        .insert([{ user_id: user.data.user.id, name: name, email: email }]);
-    }
+    // Note: Player record creation should be handled by a database trigger
+    // or the user should be redirected to complete their profile after email confirmation
+    // The RLS policy prevents direct insertion during signup
 
     return user;
   }
@@ -222,6 +226,7 @@ export class SupabaseService {
     return await this.client
       .from('player')
       .select('*')
+      .eq('is_active', true)
       .order('name', { ascending: true });
   }
 
@@ -233,6 +238,7 @@ export class SupabaseService {
       .from('player')
       .select('*')
       .eq('id', id)
+      .eq('is_active', true)
       .single();
   }
 
@@ -244,6 +250,7 @@ export class SupabaseService {
       .from('player')
       .select('*')
       .eq('user_id', userId)
+      .eq('is_active', true)
       .single();
   }
 

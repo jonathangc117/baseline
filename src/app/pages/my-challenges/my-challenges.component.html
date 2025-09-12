@@ -1,6 +1,6 @@
-<div class="my-challenges-container">
-  <div class="challenges-header">
-    <h1>My Challenges</h1>
+<div class="singles-matches flex flex-column gap-2">
+  <div class="header flex flex-row justify-content-between align-items-center">
+    <h2>My Challenges</h2>
     <button pButton type="button" label="Create Challenge" (click)="createChallenge()"></button>
   </div>
 
@@ -17,7 +17,7 @@
       <div *ngIf="challenges.length === 0" class="no-challenges">
         <p>No challenges found.</p>
       </div>
-      
+
       <p-table *ngIf="challenges.length > 0" [value]="challenges" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
           <tr>
@@ -35,19 +35,21 @@
                <p-tag [value]="getStatusDisplay(challenge)" [severity]="getStatusSeverity(challenge)"></p-tag>
              </td>
              <td>
-               <button *ngIf="challenge.status === 'pending'" 
-                       pButton 
-                       type="button" 
-                       label="Accept" 
-                       class="p-button-success p-button-sm mr-2" 
-                       (click)="acceptChallenge(challenge.id)">
+               <button
+                 *ngIf="challenge.status === 'pending'"
+                  pButton
+                  type="button"
+                  label="Accept"
+                  class="p-button-success p-button-sm mr-2"
+                  (click)="acceptChallenge(challenge.id)">
                </button>
-               <button *ngIf="challenge.status === 'pending'" 
-                       pButton 
-                       type="button" 
-                       label="Decline" 
-                       class="p-button-danger p-button-sm" 
-                       (click)="declineChallenge(challenge.id)">
+               <button
+                 *ngIf="challenge.status === 'pending'"
+                  pButton
+                  type="button"
+                  label="Decline"
+                  class="p-button-danger p-button-sm"
+                  (click)="declineChallenge(challenge.id)">
                </button>
              </td>
            </tr>
@@ -56,7 +58,7 @@
     </p-card>
   </div>
 </div>
-
+{{showCreateChallengeModal}}
 <app-create-challenge
   [(visible)]="showCreateChallengeModal"
   (challengeCreated)="onChallengeCreated($event)">

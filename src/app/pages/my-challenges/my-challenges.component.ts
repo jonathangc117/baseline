@@ -102,7 +102,7 @@ export class MyChallengesComponent implements OnInit {
 
   getChallengerName(challenge: any): string {
     if (!this.currentPlayerId) return 'Unknown Player';
-    
+
     // Determine which player is the challenger (the one who is not the current user)
     if (challenge.player1_id === this.currentPlayerId) {
       // Current user is player1, so player2 is the challenger
@@ -111,7 +111,7 @@ export class MyChallengesComponent implements OnInit {
       // Current user is player2, so player1 is the challenger
       return challenge.player1_player?.name || challenge.player1_player?.email || 'Unknown Player';
     }
-    
+
     return 'Unknown Player';
   }
 

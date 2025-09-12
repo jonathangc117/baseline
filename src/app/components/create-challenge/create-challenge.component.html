@@ -1,20 +1,19 @@
-<p-dialog 
-  [visible]="visible" 
-  [modal]="true" 
-  [closable]="true" 
-  [draggable]="false" 
-  [resizable]="false"
+<p-dialog
+  [(visible)]="visible"
   header="Create Challenge"
-  [style]="{ width: '500px', height: '100vh' }"
+  [style]="{ width: '500px' }"
+  [styleClass]="'create-challenge-dialog'"
+  (onShow)="onModalShow()"
   (onHide)="onModalHide()">
-  
-  <form [formGroup]="challengeForm" class="create-challenge-form">
+
+  <form [formGroup]="challengeForm" class="flex flex-column gap-4">
     <div *ngIf="error" class="error-message">
       <p-message severity="error" [text]="error"></p-message>
     </div>
 
     <div class="form-group">
       <label for="player-select">Select Player to Challenge:</label>
+
       <p-dropdown
         id="player-select"
         [options]="players"
@@ -25,20 +24,27 @@
         filterBy="name,email"
         [showClear]="true"
         styleClass="w-full">
+
         <ng-template pTemplate="selectedItem" let-selectedOption>
           <div *ngIf="selectedOption" class="flex align-items-center">
             <span>{{ selectedOption.name || selectedOption.email }}</span>
           </div>
         </ng-template>
+
         <ng-template pTemplate="item" let-option>
           <div class="flex align-items-center">
             <span>{{ option.name || option.email }}</span>
             <small class="ml-2 text-muted">{{ option.email }}</small>
           </div>
         </ng-template>
+
       </p-dropdown>
-      <small *ngIf="challengeForm.get('selectedPlayer')?.invalid && challengeForm.get('selectedPlayer')?.touched" 
-             class="p-error">Player selection is required</small>
+
+      <small
+        *ngIf="challengeForm.get('selectedPlayer')?.invalid && challengeForm.get('selectedPlayer')?.touched" 
+        class="p-error">
+          Player selection is required
+      </small>
     </div>
 
     <div class="form-group">
@@ -51,20 +57,23 @@
         placeholder="Select date and time"
         styleClass="w-full">
       </p-calendar>
-      <small *ngIf="challengeForm.get('date')?.invalid && challengeForm.get('date')?.touched" 
-             class="p-error">Date and time is required</small>
+      <small
+        *ngIf="challengeForm.get('date')?.invalid && challengeForm.get('date')?.touched"
+        class="p-error">
+          Date and time is required
+      </small>
     </div>
 
     <div class="form-group">
       <label for="invitation-message">Invitation Message (Optional):</label>
-      <textarea
-        id="invitation-message"
-        pInputTextarea
-        formControlName="invitation_message"
-        placeholder="Add a message for your challenge..."
-        rows="3"
-        class="w-full">
-      </textarea>
+       <textarea
+         id="invitation-message"
+         pTextarea
+         formControlName="invitation_message"
+         placeholder="Add a message for your challenge..."
+         rows="3"
+         class="w-full">
+       </textarea>
     </div>
   </form>
 
