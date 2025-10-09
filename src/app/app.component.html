@@ -1,6 +1,5 @@
-@defer (when showMenu) {
-  <app-bottom-menu />
-}
+<app-bottom-menu *ngIf="showMenu" />
+
 <div class="mx-3 mt-3">
     <router-outlet />
 </div>

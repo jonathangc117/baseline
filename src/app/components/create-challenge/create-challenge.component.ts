@@ -54,6 +54,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     this.challengeForm = this.fb.group({
       selectedPlayer: [null, Validators.required],
       date: [null, Validators.required],
+      location: [''],
       invitation_message: ['']
     });
   }
@@ -113,11 +114,12 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         date: formValue.date.toISOString(),
         invitation_message: formValue.invitation_message,
         seen: false,
-        status: 'pending'
+        status: 'pending',
+        location: formValue.location
       };
 
       const { data, error } = await this.supabaseService.insertRecord('challenge', challengeData);
-      
+
       if (error) {
         this.error = 'Failed to create challenge';
         console.error('Error creating challenge:', error);

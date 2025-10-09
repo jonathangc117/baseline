@@ -77,3 +77,24 @@ button, .p-button {
 .p-tablist-tab-list {
   background: inherit !important;
 }
+
+/* Responsive utility classes */
+.hide-on-mobile {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+.show-on-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .show-on-mobile {
+    display: block !important;
+  }
+}

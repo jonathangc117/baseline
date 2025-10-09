@@ -1,5 +1,5 @@
 <div class="singles-matches flex flex-column gap-2">
-  <div class="header flex flex-row justify-content-between align-items-center">
+  <div class="header flex md:flex-row flex-column md:justify-content-between md:align-items-center">
     <h2>My Challenges</h2>
     <button pButton type="button" label="Create Challenge" (click)="createChallenge()"></button>
   </div>
@@ -22,7 +22,7 @@
         <ng-template pTemplate="header">
           <tr>
             <th>Challenger</th>
-            <th>Date</th>
+            <th class="hide-on-mobile">Date</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -30,7 +30,7 @@
          <ng-template pTemplate="body" let-challenge>
            <tr>
              <td>{{ getChallengerName(challenge) }}</td>
-             <td>{{ challenge.date | date:'short' }}</td>
+             <td class="hide-on-mobile">{{ challenge.date | date:'short' }}</td>
              <td>
                <p-tag [value]="getStatusDisplay(challenge)" [severity]="getStatusSeverity(challenge)"></p-tag>
              </td>
@@ -58,7 +58,6 @@
     </p-card>
   </div>
 </div>
-{{showCreateChallengeModal}}
 <app-create-challenge
   [(visible)]="showCreateChallengeModal"
   (challengeCreated)="onChallengeCreated($event)">

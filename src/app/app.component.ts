@@ -16,10 +16,11 @@ import { BottomMenuComponent } from './components/bottom-menu/bottom-menu.compon
 })
 export class AppComponent {
   title = 'baseline';
-  showMenu = true;
+  showMenu = false;
 
-  constructor(private router: Router) {
-    this.updateMenuVisibility(this.router.url);
+  constructor(public router: Router) {
+
+
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.updateMenuVisibility(event.urlAfterRedirects);
@@ -28,6 +29,8 @@ export class AppComponent {
   }
 
   private updateMenuVisibility(url: string) {
+    // Remove debugger statement
     this.showMenu = !url.startsWith('/login');
+    console.log('Menu visibility updated:', { url, showMenu: this.showMenu });
   }
 }
